@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Photo;
 use App\Models\Undanganku;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
@@ -33,6 +35,8 @@ class AdminController extends Controller
 
     public function penggunaStore(Request $request) {
         try {
+            DB::beginTransaction();
+
             $undangan = new Undanganku();
             $undangan->user_id = 1;
             $undangan->male_name = $request->male_name;
@@ -54,8 +58,23 @@ class AdminController extends Controller
             $undangan->backsound_link = $request->backsound_link;
             $undangan->save();
 
+            foreach ($request->photos as $key => $photo) {
+                $extension = $photo->getClientOriginalExtension();
+                $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
+                $photo->move(public_path('undangan/inidinamis'), $filenameSave);
+
+                $undanganPhoto = new Photo();
+                $undanganPhoto->undangan_id = $undangan->id;
+                $undanganPhoto->photo = "/undangan/inidinamis/" . $filenameSave;
+                // $undanganPhoto->prefix = "Utama";
+                $undanganPhoto->save();
+            }
+
+            DB::commit();
+
             return response()->json(["message" => "Undangan berhasil dibuat"]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 500);
         }
     }

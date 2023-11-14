@@ -112,7 +112,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="d-flex flex-column gap-2">
-                    <label for="" class="fw-semibold">Foto</label>
+                    <label for="" class="fw-semibold">Foto <small class="text-danger fw-bold">( *minimal 6 maksimal 12 )</small></label>
                     <div class="d-flex flex-wrap gap-2" id="foto-wrapper"></div>
                 </div>
             </div>
@@ -127,15 +127,36 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 <script>
+    let iter = 12;
     let fotoWrapper = $("#foto-wrapper");
+
     if (fotoWrapper.length > 0) {
-        let iter = 6;
         for (let index = 0; index < iter; index++) {
             fotoWrapper.append(`
-                <div class="d-flex justify-content-center align-items-center" style="border: 4px dashed #d9dee3; width: 200px; height: 200px">
+                <label for="photo-file-${index}" id="photo-${index}" class="position-relative d-flex cursor-pointer justify-content-center align-items-center" style="border: 4px dashed #d9dee3; width: 200px; height: 200px">
                     <i class='bx bx-plus' style="font-size: 48px"></i>
-                </div>
+                    <input type="file" onchange="showPhoto(${index})" id="photo-file-${index}" style="display: none" />
+                    <img src="" id="photo-view-${index}" class="position-absolute w-100 h-100 d-none" style="object-fit: cover" />
+                </label>
             `);
+        }
+    }
+
+    function showPhoto(indexData) {
+        const selector = document.querySelector(`#photo-file-${indexData}`);
+        if (selector) {
+            const fileList = selector.files[0];
+            if (["image/jpeg", "image/jpg", "image/png"].includes(fileList.type)) {
+                const imgPreview = document.querySelector(`#photo-view-${indexData}`);
+                if (imgPreview) {
+                    const reader = new FileReader();
+                    reader.addEventListener("load", (event) => {
+                        imgPreview.src = event.target.result;
+                    });
+                    imgPreview.classList.remove("d-none");
+                    return reader.readAsDataURL(fileList);
+                }
+            }
         }
     }
 
@@ -147,29 +168,39 @@
 
     $("#submit").click(function(e) {
         e.preventDefault();
+
+        let formdata = new FormData();
+        formdata.append("_token", "{{ csrf_token() }}");
+        formdata.append("male_name", $("#male_name").val());
+        formdata.append("male_alias", $("#male_alias").val());
+        formdata.append("male_father", $("#male_father").val());
+        formdata.append("male_mother", $("#male_mother").val());
+        formdata.append("female_name", $("#female_name").val());
+        formdata.append("female_alias", $("#female_alias").val());
+        formdata.append("female_father", $("#female_father").val());
+        formdata.append("female_mother", $("#female_mother").val());
+        formdata.append("akad_date", $("#akad_date").val() + " " + $("#akad_time").val());
+        formdata.append("akad_place", $("#akad_place").val());
+        formdata.append("resepsi_date", $("#resepsi_date").val() + " " + $("#resepsi_time").val());
+        formdata.append("resepsi_place", $("#resepsi_place").val());
+        formdata.append("male_contact", $("#male_contact").val());
+        formdata.append("male_ig", $("#male_ig").val());
+        formdata.append("female_contact", $("#female_contact").val());
+        formdata.append("female_ig", $("#female_ig").val());
+        formdata.append("backsound_link", $("#backsound_link").val());
+        for (let index = 0; index < 12; index++) {
+            if ($(`#photo-file-${index}`).val()) {
+                formdata.append("photos[]", $(`#photo-file-${index}`).prop("files")[0]);
+            }
+        }
+
         $.ajax({
             url: "{{ route('pengguna.store') }}",
             type: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                male_name: $("#male_name").val(),
-                male_alias: $("#male_alias").val(),
-                male_father: $("#male_father").val(),
-                male_mother: $("#male_mother").val(),
-                female_name: $("#female_name").val(),
-                female_alias: $("#female_alias").val(),
-                female_father: $("#female_father").val(),
-                female_mother: $("#female_mother").val(),
-                akad_date: $("#akad_date").val() + " " + $("#akad_time").val(),
-                akad_place: $("#akad_place").val(),
-                resepsi_date: $("#resepsi_date").val() + " " + $("#resepsi_time").val(),
-                resepsi_place: $("#resepsi_place").val(),
-                male_contact: $("#male_contact").val(),
-                male_ig: $("#male_ig").val(),
-                female_contact: $("#female_contact").val(),
-                female_ig: $("#female_ig").val(),
-                backsound_link: $("#backsound_link").val()
-            },
+            data: formdata,
+            cache: false,
+            processData: false,
+            contentType: false,
             success: function() {
                 return location.href = "/admin/pengguna";
             },
