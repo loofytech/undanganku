@@ -9,7 +9,7 @@
             <table id="table" class="w-100 table table-bordered table-striped">
                 <thead>
                     <tr>
-                        {{-- <th>No.</th> --}}
+                        <th style="width: 10px"></th>
                         <th>Nama Pria</th>
                         <th>Ayah Pria</th>
                         <th>Ibu Pria</th>
@@ -61,9 +61,16 @@
             complete: function(response) {},
         },
         columns: [
-            // {"data": null, "sortable": false, render: function (data, type, row, meta) {
-            //     return meta.row + meta.settings._iDisplayStart + 1;
-            // }},
+            {"data": "id", "sortable": false, render: function (data, type, row, meta) {
+                return `<div class="cursor-pointer dropdown" style="display: inline-block">
+                    <i class='bx bx-dots-vertical-rounded fs-4' data-bs-toggle="dropdown" aria-expanded="false"></i>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Detail</a></li>
+                        <li><a class="dropdown-item" href="/admin/pengguna/edit/${data}">Update</a></li>
+                        <li><a class="dropdown-item" href="#">Delete</a></li>
+                    </ul>
+                </div>`;
+            }},
             {"data": "male_name", "sortable": false, render: function(data, type, row, meta) {
                 return data + " <b>(" + row.male_nickname + ")</b>";
             }},

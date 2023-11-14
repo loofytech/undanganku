@@ -23,4 +23,6 @@ Route::group(["prefix" => "admin", "middleware" => ["isAdmin"]], function() {
     Route::get("pengguna/create", [AdminController::class, "penggunaCreate"])->name("pengguna.create");
     Route::post("pengguna/store", [AdminController::class, "penggunaStore"])->name("pengguna.store");
     Route::get("/pengguna/data", [AdminController::class, "penggunaData"])->name("pengguna.data");
+    Route::get("pengguna/edit/{id}", [AdminController::class, "penggunaEdit"])->name("pengguna.edit");
+    Route::put("pengguna/update/{id}", [AdminController::class, "penggunaUpdate"])->name("pengguna.update");
 });
