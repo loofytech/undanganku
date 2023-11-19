@@ -9,9 +9,31 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-6 col-sm-12 d-flex flex-column gap-3 mb-3">
-                <div class="d-flex flex-column gap-1">
-                    <label for="" class="fw-semibold">Nama Lengkap Pria</label>
-                    <input type="text" id="male_name" class="form-control" autocomplete="off">
+                <div class="d-flex col-md-6 col-sm-12 gap-3 w-100">
+                    <div class="d-flex flex-column gap-1 w-50">
+                        <label for="" class="fw-semibold">Anak Keberapa</label>
+                        <select class="form-control" id="male_children_to">
+                            <option value="Pertama">Pertama</option>
+                            <option value="Kedua">Kedua</option>
+                            <option value="Ketiga">Ketiga</option>
+                            <option value="Keempat">Keempat</option>
+                            <option value="Kelima">Kelima</option>
+                            <option value="Keenam">Keenam</option>
+                            <option value="Ketujuh">Ketujuh</option>
+                            <option value="Kedelapan">Kedelapan</option>
+                            <option value="Kesembilan">Kesembilan</option>
+                            <option value="Kesepuluh">Kesepuluh</option>
+                            <option value="Kesebelas">Kesebelas</option>
+                            <option value="Keduabelas">Keduabelas</option>
+                            <option value="Ketigabelas">Ketigabelas</option>
+                            <option value="Keempatbelas">Keempatbelas</option>
+                            <option value="Kelimabelas">Kelimabelas</option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column gap-1 w-100">
+                        <label for="" class="fw-semibold">Nama Lengkap Pria</label>
+                        <input type="text" id="male_name" class="form-control" autocomplete="off">
+                    </div>
                 </div>
                 <div class="d-flex flex-column gap-1">
                     <label for="" class="fw-semibold">Nama Panggilan Pria</label>
@@ -27,9 +49,31 @@
                 </div>
             </div>
             <div class="col-md-6 col-sm-12 d-flex flex-column gap-3 mb-3">
-                <div class="d-flex flex-column gap-1">
-                    <label for="" class="fw-semibold">Nama Lengkap Wanita</label>
-                    <input type="text" id="female_name" class="form-control" autocomplete="off">
+                <div class="d-flex col-md-6 col-sm-12 gap-3 w-100">
+                    <div class="d-flex flex-column gap-1 w-50">
+                        <label for="" class="fw-semibold">Anak Keberapa</label>
+                        <select class="form-control" id="female_children_to">
+                            <option value="Pertama">Pertama</option>
+                            <option value="Kedua">Kedua</option>
+                            <option value="Ketiga">Ketiga</option>
+                            <option value="Keempat">Keempat</option>
+                            <option value="Kelima">Kelima</option>
+                            <option value="Keenam">Keenam</option>
+                            <option value="Ketujuh">Ketujuh</option>
+                            <option value="Kedelapan">Kedelapan</option>
+                            <option value="Kesembilan">Kesembilan</option>
+                            <option value="Kesepuluh">Kesepuluh</option>
+                            <option value="Kesebelas">Kesebelas</option>
+                            <option value="Keduabelas">Keduabelas</option>
+                            <option value="Ketigabelas">Ketigabelas</option>
+                            <option value="Keempatbelas">Keempatbelas</option>
+                            <option value="Kelimabelas">Kelimabelas</option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column gap-1 w-100">
+                        <label for="" class="fw-semibold">Nama Lengkap Wanita</label>
+                        <input type="text" id="female_name" class="form-control" autocomplete="off">
+                    </div>
                 </div>
                 <div class="d-flex flex-column gap-1">
                     <label for="" class="fw-semibold">Nama Panggilan Wanita</label>
@@ -120,9 +164,35 @@
     </div>
     <div class="card-footer">
         <button type="button" id="submit" class="btn btn-primary">Submit Data</button>
+        <button type="button" disabled id="submit-disabled" class="d-none d-flex align-items-center gap-2 btn btn-primary">
+            Submit Data
+            <div class="loader"></div>
+        </button>
     </div>
 </div>
 @endsection
+
+@push('css')
+<style>
+    .loader {
+    width: 30px;
+    aspect-ratio: 2;
+    --_g: no-repeat radial-gradient(circle closest-side,#fff 90%,#0000);
+    background: 
+        var(--_g) 0%   50%,
+        var(--_g) 50%  50%,
+        var(--_g) 100% 50%;
+    background-size: calc(100%/3) 50%;
+    animation: l3 1s infinite linear;
+    }
+    @keyframes l3 {
+        20%{background-position:0%   0%, 50%  50%,100%  50%}
+        40%{background-position:0% 100%, 50%   0%,100%  50%}
+        60%{background-position:0%  50%, 50% 100%,100%   0%}
+        80%{background-position:0%  50%, 50%  50%,100% 100%}
+    }
+</style>
+@endpush
 
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
@@ -168,13 +238,17 @@
 
     $("#submit").click(function(e) {
         e.preventDefault();
+        $("#submit").addClass("d-none");
+        $("#submit-disabled").removeClass("d-none");
 
         let formdata = new FormData();
         formdata.append("_token", "{{ csrf_token() }}");
+        formdata.append("male_children_to", $("#male_children_to").val());
         formdata.append("male_name", $("#male_name").val());
         formdata.append("male_alias", $("#male_alias").val());
         formdata.append("male_father", $("#male_father").val());
         formdata.append("male_mother", $("#male_mother").val());
+        formdata.append("female_children_to", $("#female_children_to").val());
         formdata.append("female_name", $("#female_name").val());
         formdata.append("female_alias", $("#female_alias").val());
         formdata.append("female_father", $("#female_father").val());
@@ -204,7 +278,11 @@
             success: function() {
                 return location.href = "/admin/pengguna";
             },
-            error: function(e) {}
+            error: function(e) {
+                console.log(e);
+                $("#submit").removeClass("d-none");
+                $("#submit-disabled").addClass("d-none");
+            }
         });
     });
 </script>

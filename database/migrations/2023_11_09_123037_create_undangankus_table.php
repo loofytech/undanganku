@@ -16,12 +16,14 @@ return new class extends Migration
         Schema::create('undangankus', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id");
+            $table->string("male_children_to");
             $table->string("male_name");
             $table->string("male_nickname");
             $table->string("male_father_name");
             $table->string("male_mother_name");
             $table->string("male_contact")->nullable();
             $table->string("male_ig")->nullable();
+            $table->string("female_children_to");
             $table->string("female_name");
             $table->string("female_nickname");
             $table->string("female_father_name");

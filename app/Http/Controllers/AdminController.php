@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Photo;
 use App\Models\Undanganku;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
+use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -37,14 +41,27 @@ class AdminController extends Controller
         try {
             DB::beginTransaction();
 
+            $username = Str::lower($request->female_alias ."-". $request->male_alias);
+
+            $user = new User();
+            $user->name = $request->female_alias ." ". $request->male_alias;
+            $user->email = time() ."@mail.com";
+            $user->username = $username;
+            $user->password = Hash::make("12345678");
+            $user->email_verified_at = Carbon::now();
+            $user->role = 2;
+            $user->save();
+
             $undangan = new Undanganku();
-            $undangan->user_id = 1;
+            $undangan->user_id = $user->id;
+            $undangan->male_children_to = $request->male_children_to;
             $undangan->male_name = $request->male_name;
             $undangan->male_nickname = $request->male_alias;
             $undangan->male_father_name = $request->male_father;
             $undangan->male_mother_name = $request->male_mother;
             $undangan->male_contact = $request->male_contact;
             $undangan->male_ig = $request->male_ig;
+            $undangan->female_children_to = $request->female_children_to;
             $undangan->female_name = $request->female_name;
             $undangan->female_nickname = $request->female_alias;
             $undangan->female_father_name = $request->female_father;
@@ -61,11 +78,12 @@ class AdminController extends Controller
             foreach ($request->photos as $key => $photo) {
                 $extension = $photo->getClientOriginalExtension();
                 $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
-                $photo->move(public_path('undangan/inidinamis'), $filenameSave);
+                $photo->move(public_path("undangan/". $user->username), $filenameSave);
+                ImageOptimizer::optimize(public_path("undangan/". $user->username ."/". $filenameSave));
 
                 $undanganPhoto = new Photo();
                 $undanganPhoto->undangan_id = $undangan->id;
-                $undanganPhoto->photo = "/undangan/inidinamis/" . $filenameSave;
+                $undanganPhoto->photo = "undangan/". $user->username ."/". $filenameSave;
                 // $undanganPhoto->prefix = "Utama";
                 $undanganPhoto->save();
             }

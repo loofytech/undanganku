@@ -4,7 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <a href="{{ route("pengguna.create") }}" class="btn btn-primary">Tambah Pengguna</a>
+        <a href="{{ route("pengguna.create") }}" class="btn btn-primary">Tambah Mempelai</a>
         <div class="mt-3">
             <table id="table" class="w-100 table table-bordered table-striped">
                 <thead>
