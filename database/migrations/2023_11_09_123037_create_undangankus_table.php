@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string("female_mother_name");
             $table->string("female_contact")->nullable();
             $table->string("female_ig")->nullable();
-            $table->timestamp("akad_date");
+            $table->timestamp("akad_date")->nullable();
             $table->text("akad_place");
-            $table->timestamp("resepsi_date");
+            $table->timestamp("resepsi_date")->nullable();
             $table->text("resepsi_place");
             $table->string("backsound_link")->nullable();
             $table->timestamps();
