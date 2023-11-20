@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
-use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 use Illuminate\Support\Str;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class AdminController extends Controller
 {
@@ -75,11 +75,13 @@ class AdminController extends Controller
             $undangan->backsound_link = $request->backsound_link;
             $undangan->save();
 
+            $optimizerChain = OptimizerChainFactory::create();
+
             foreach ($request->photos as $key => $photo) {
                 $extension = $photo->getClientOriginalExtension();
                 $filenameSave = time() . "_" . rand(100, 9999) . "." . $extension;
                 $photo->move(public_path("undangan/". $user->username), $filenameSave);
-                ImageOptimizer::optimize(public_path("undangan/". $user->username ."/". $filenameSave));
+                $optimizerChain->optimize(public_path("undangan/". $user->username ."/". $filenameSave));
 
                 $undanganPhoto = new Photo();
                 $undanganPhoto->undangan_id = $undangan->id;
