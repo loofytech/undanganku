@@ -84,7 +84,7 @@ class AdminController extends Controller
                 $undanganPhoto = new Photo();
                 $undanganPhoto->undangan_id = $undangan->id;
                 $undanganPhoto->photo = "undangan/". $user->username ."/". $filenameSave;
-                // $undanganPhoto->prefix = "Utama";
+                $undanganPhoto->prefix = $request->labels[$key];
                 $undanganPhoto->save();
             }
 

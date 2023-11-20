@@ -157,7 +157,7 @@
             <div class="col-12">
                 <div class="d-flex flex-column gap-2">
                     <label for="" class="fw-semibold">Foto <small class="text-danger fw-bold">( *minimal 6 maksimal 12 )</small></label>
-                    <div class="d-flex flex-wrap gap-2" id="foto-wrapper"></div>
+                    <div class="d-flex flex-wrap gap-4" id="foto-wrapper"></div>
                 </div>
             </div>
         </div>
@@ -203,11 +203,23 @@
     if (fotoWrapper.length > 0) {
         for (let index = 0; index < iter; index++) {
             fotoWrapper.append(`
-                <label for="photo-file-${index}" id="photo-${index}" class="position-relative d-flex cursor-pointer justify-content-center align-items-center" style="border: 4px dashed #d9dee3; width: 200px; height: 200px">
-                    <i class='bx bx-plus' style="font-size: 48px"></i>
-                    <input type="file" onchange="showPhoto(${index})" id="photo-file-${index}" style="display: none" />
-                    <img src="" id="photo-view-${index}" class="position-absolute w-100 h-100 d-none" style="object-fit: cover" />
-                </label>
+                <div class="d-flex flex-column gap-2">
+                    <label for="photo-file-${index}" id="photo-${index}" class="position-relative d-flex cursor-pointer justify-content-center align-items-center" style="border: 4px dashed #d9dee3; width: 200px; height: 200px">
+                        <i class='bx bx-plus' style="font-size: 48px"></i>
+                        <input type="file" onchange="showPhoto(${index})" id="photo-file-${index}" style="display: none" />
+                        <img src="" id="photo-view-${index}" class="position-absolute w-100 h-100 d-none" style="object-fit: cover" />
+                    </label>
+                    <select class="form-control" id="option-photo-${index}">
+                        <option value="">Pilih penempatan</option>
+                        <option value="cover">Cover</option>
+                        <option value="slide1">Slide Pertama</option>
+                        <option value="slide2">Slide Kedua</option>
+                        <option value="mempelai-pria">Mempelai Pria</option>
+                        <option value="mempelai-wanita">Mempelai Wanita</option>
+                        <option value="akad">Akad</option>
+                        <option value="resepsi">Resepsi</option>
+                    </select>
+                </div>
             `);
         }
     }
@@ -265,6 +277,7 @@
         for (let index = 0; index < 12; index++) {
             if ($(`#photo-file-${index}`).val()) {
                 formdata.append("photos[]", $(`#photo-file-${index}`).prop("files")[0]);
+                formdata.append("labels[]", $(`#option-photo-${index}`).val());
             }
         }
 
