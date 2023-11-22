@@ -148,15 +148,25 @@
         <div class="row">
             <div class="col-sm-12 d-flex flex-column gap-3 mb-3">
                 <div class="d-flex flex-column gap-1">
-                    <label for="" class="fw-semibold">Backsound Link</label>
-                    <input type="text" id="backsound_link" class="form-control" autocomplete="off">
+                    <label for="" class="fw-semibold">Backsound</label>
+                    <select name="" id="backsound_link" class="form-control">
+                        <option value="" selected>Pilih Backsound</option>
+                        <option value="Batas Senja - Nanti Kita Seperti Ini.mp3">Batas Senja - Nanti Kita Seperti Ini</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 d-flex flex-column gap-3 mb-3">
+                <div class="d-flex flex-column gap-1" id="giftWrapper">
+                    <label for="" class="fw-semibold">Gift / Hadiah</label>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="d-flex flex-column gap-2">
-                    <label for="" class="fw-semibold">Foto <small class="text-danger fw-bold">( *minimal 6 maksimal 12 )</small></label>
+                    <label for="" class="fw-semibold">Foto <small class="text-danger fw-bold">( *minimal 9 maksimal 18 )</small></label>
                     <div class="d-flex flex-wrap gap-4" id="foto-wrapper"></div>
                 </div>
             </div>
@@ -197,7 +207,7 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 <script>
-    let iter = 12;
+    let iter = 18;
     let fotoWrapper = $("#foto-wrapper");
 
     if (fotoWrapper.length > 0) {
@@ -218,7 +228,32 @@
                         <option value="mempelai-wanita">Mempelai Wanita</option>
                         <option value="akad">Akad</option>
                         <option value="resepsi">Resepsi</option>
+                        <option value="love-story">Love Story</option>
                     </select>
+                </div>
+            `);
+        }
+    }
+
+    let iterGift = 3;
+    let giftWrapper = $("#giftWrapper");
+
+    if (giftWrapper.length > 0) {
+        for (let index = 0; index < iterGift; index++) {
+            giftWrapper.append(`
+                <div class="d-flex gap-2 ${index == 0 ? "" : "mt-1"}">
+                    <select id="prefix-gift-${index}" class="form-control" style="width: 40%">
+                        <option value="" selected>Pilih Tipe Gift</option>
+                        <option value="bca">Bank BCA</option>
+                        <option value="mandiri">Bank Mandiri</option>
+                        <option value="bri">Bank BRI</option>
+                        <option value="cimb">Bank CIMB</option>
+                        <option value="dana">Dompet Digital Dana</option>
+                        <option value="gopay">Dompet Digital Gopay</option>
+                        <option value="ovo">Dompet Digital OVO</option>
+                    </select>
+                    <input type="text" autocomplete="off" class="form-control" id="gift-label-${index}" placeholder="Nama pemilik rekening/dompet">
+                    <input type="text" autocomplete="off" class="form-control" id="gift-number-${index}" placeholder="Nomor rekening/dompet">
                 </div>
             `);
         }
@@ -274,6 +309,14 @@
         formdata.append("female_contact", $("#female_contact").val());
         formdata.append("female_ig", $("#female_ig").val());
         formdata.append("backsound_link", $("#backsound_link").val());
+
+        for (let index = 0; index < 3; index++) {
+            if ($(`#gift-number-${index}`).val()) {
+                formdata.append("gifts[]", $(`#gift-number-${index}`).val());
+                formdata.append("gift_labels[]", $(`#gift-label-${index}`).val());
+                formdata.append("gift_prefixs[]", $(`#gift-prefix-${index}`).val());
+            }
+        }
         for (let index = 0; index < 12; index++) {
             if ($(`#photo-file-${index}`).val()) {
                 formdata.append("photos[]", $(`#photo-file-${index}`).prop("files")[0]);

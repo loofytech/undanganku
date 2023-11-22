@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('gifts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("undangan_id");
-            $table->string("gift_to")->nullable();
+            $table->string("gift")->nullable();
+            $table->string("gift_label")->nullable();
             $table->string("prefix");
             $table->string("image_prefix");
             $table->timestamps();

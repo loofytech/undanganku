@@ -22,4 +22,8 @@ class Undanganku extends Model
     public function photos() {
         return $this->hasMany(Photo::class, "undangan_id");
     }
+
+    public function greetings() {
+        return $this->hasMany(Greeting::class, "undangan_id");
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gift;
 use App\Models\Photo;
 use App\Models\Undanganku;
 use App\Models\User;
@@ -72,8 +73,18 @@ class AdminController extends Controller
             $undangan->akad_place = $request->akad_place;
             $undangan->resepsi_date = $request->resepsi_date;
             $undangan->resepsi_place = $request->resepsi_place;
-            $undangan->backsound_link = $request->backsound_link;
+            $undangan->backsound_link = "static/". $request->backsound_link;
             $undangan->save();
+
+            foreach ($request->gifts as $key => $gift) {
+                $gifts = new Gift();
+                $gifts->undangan_id = $undangan->id;
+                $gifts->gift = $gift;
+                $gifts->gift_label = $request->gift_labels[$key];
+                $gifts->prefix = $request->gift_prefixs[$key];
+                $gifts->image_prefix = "";
+                $gifts->save();
+            }
 
             // $optimizerChain = OptimizerChainFactory::create();
 
