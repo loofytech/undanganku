@@ -16,7 +16,7 @@ class TemplateSeeder extends Seeder
     public function run()
     {
         $template = new Template();
-        $template->template_name = "Template 1";
+        $template->template_name = "template-1";
         $template->save();
     }
 }

@@ -27,6 +27,10 @@ class Undanganku extends Model
         return $this->hasMany(Greeting::class, "undangan_id");
     }
 
+    public function gifts() {
+        return $this->hasMany(Gift::class, "undangan_id");
+    }
+
     public function template() {
         return $this->belongsTo(Template::class, "template_id");
     }
