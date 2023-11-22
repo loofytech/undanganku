@@ -10,7 +10,7 @@ class StaticController extends Controller
 {
     public function getMempelai(Request $request, $username) {
         try {
-            $user = User::with("undangan.photos", "undangan.greetings")->where("username", $username)->first();
+            $user = User::with("undangan.photos", "undangan.greetings", "undangan.gifts")->where("username", $username)->first();
             if (!$user) {
                 return response()->json(["data" => null], 404);
             }
