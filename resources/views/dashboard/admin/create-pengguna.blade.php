@@ -310,14 +310,14 @@
         formdata.append("female_ig", $("#female_ig").val());
         formdata.append("backsound_link", $("#backsound_link").val());
 
-        for (let index = 0; index < 3; index++) {
+        for (let index = 0; index < iterGift; index++) {
             if ($(`#gift-number-${index}`).val()) {
                 formdata.append("gifts[]", $(`#gift-number-${index}`).val());
                 formdata.append("gift_labels[]", $(`#gift-label-${index}`).val());
                 formdata.append("gift_prefixs[]", $(`#gift-prefix-${index}`).val());
             }
         }
-        for (let index = 0; index < 12; index++) {
+        for (let index = 0; index < iter; index++) {
             if ($(`#photo-file-${index}`).val()) {
                 formdata.append("photos[]", $(`#photo-file-${index}`).prop("files")[0]);
                 formdata.append("labels[]", $(`#option-photo-${index}`).val());
