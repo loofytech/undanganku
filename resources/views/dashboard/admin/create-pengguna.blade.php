@@ -242,7 +242,7 @@
         for (let index = 0; index < iterGift; index++) {
             giftWrapper.append(`
                 <div class="d-flex gap-2 ${index == 0 ? "" : "mt-1"}">
-                    <select id="prefix-gift-${index}" class="form-control" style="width: 40%">
+                    <select id="gift-prefix-${index}" class="form-control" style="width: 40%">
                         <option value="" selected>Pilih Tipe Gift</option>
                         <option value="bca">Bank BCA</option>
                         <option value="mandiri">Bank Mandiri</option>
