@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('undangankus', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("template_id");
             $table->string("male_children_to");
             $table->string("male_name");
             $table->string("male_nickname");
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign("user_id")->references("id")->on("users")->onUpdate("cascade")->onDelete("cascade");
+            $table->foreign("template_id")->references("id")->on("templates")->onUpdate("cascade")->onDelete("cascade");
         });
     }
 

@@ -26,4 +26,8 @@ class Undanganku extends Model
     public function greetings() {
         return $this->hasMany(Greeting::class, "undangan_id");
     }
+
+    public function template() {
+        return $this->belongsTo(Template::class, "template_id");
+    }
 }

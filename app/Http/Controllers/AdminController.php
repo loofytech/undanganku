@@ -55,6 +55,7 @@ class AdminController extends Controller
 
             $undangan = new Undanganku();
             $undangan->user_id = $user->id;
+            $undangan->template_id = 1;
             $undangan->male_children_to = $request->male_children_to;
             $undangan->male_name = $request->male_name;
             $undangan->male_nickname = $request->male_alias;
