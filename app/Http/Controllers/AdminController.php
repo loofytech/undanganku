@@ -78,19 +78,19 @@ class AdminController extends Controller
             $undangan->backsound_link = "static/". $request->backsound_link;
             $undangan->save();
 
-            if ($undangan->template_id == 1) {
-                $template = new TemplateOne();
-                $template->quote_1_description = $request->quote_1_description;
-                $template->quote_2_title = $request->quote_2_title;
-                $template->quote_2_description = $request->quote_2_description;
-                $template->meet_description = $request->meet_description;
-                $template->approach_description = $request->approach_description;
-                $template->proposal_description = $request->proposal_description;
-                $template->marry_description = $request->marry_description;
-                $template->gift_description = $request->gift_description;
-                $template->greetings_thank_you = $request->greetings_thank_you;
-                $template->save();
-            }
+            // if ($undangan->template_id == 1) {
+            //     $template = new TemplateOne();
+            //     $template->quote_1_description = $request->quote_1_description;
+            //     $template->quote_2_title = $request->quote_2_title;
+            //     $template->quote_2_description = $request->quote_2_description;
+            //     $template->meet_description = $request->meet_description;
+            //     $template->approach_description = $request->approach_description;
+            //     $template->proposal_description = $request->proposal_description;
+            //     $template->marry_description = $request->marry_description;
+            //     $template->gift_description = $request->gift_description;
+            //     $template->greetings_thank_you = $request->greetings_thank_you;
+            //     $template->save();
+            // }
 
             foreach ($request->gifts as $key => $gift) {
                 $gifts = new Gift();
