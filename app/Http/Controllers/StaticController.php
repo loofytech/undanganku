@@ -21,7 +21,7 @@ class StaticController extends Controller
         }
     }
 
-    public function storeGreeting(Request $request, $undanganId) {
+    public function storeGreeting(Request $request) {
         try {
             $greeting = new Greeting();
             $greeting->undangan_id = $request->undangan_id;
