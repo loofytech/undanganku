@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Greeting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,14 @@ class StaticController extends Controller
 
     public function storeGreeting(Request $request, $undanganId) {
         try {
-            
+            $greeting = new Greeting();
+            $greeting->undangan_id = $request->undangan_id;
+            $greeting->pronouncer = $request->pronouncer;
+            $greeting->relation = $request->relation;
+            $greeting->greeting = $request->greeting;
+            $greeting->save();
+
+            return response()->json(["data" => $greeting]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(["message" => $e->getMessage()], 400);

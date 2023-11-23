@@ -9,3 +9,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get("/mempelai/{username}", [StaticController::class, "getMempelai"]);
+Route::post("/greeting", [StaticController::class, "storeGreeting"]);
